@@ -1,0 +1,94 @@
+---
+import type { GadgetProduct } from "@/data/gadgets";
+
+interface Props {
+  product: GadgetProduct;
+}
+
+const { product } = Astro.props;
+---
+
+<article
+  class="gadget-card flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-shadow hover:shadow-md"
+  data-category={product.category}
+  data-search={`${product.name} ${product.category} ${product.description}`}
+>
+  <div class="relative aspect-square overflow-hidden bg-gradient-to-br from-brand-50 via-white to-accent-100">
+    {product.image ? (
+      <img
+        class="size-full object-contain"
+        src={product.image}
+        alt={product.imageAlt}
+        loading="lazy"
+        decoding="async"
+        width="600"
+        height="600"
+      />
+    ) : (
+      <div class="flex size-full flex-col items-center justify-center gap-3 p-6 text-center">
+        <svg
+          class="size-14 text-brand-700"
+          viewBox="0 0 48 48"
+          fill="none"
+          aria-hidden="true"
+        >
+          <rect
+            x="8"
+            y="12"
+            width="32"
+            height="27"
+            rx="5"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+          <path
+            d="M17 12V9.5A2.5 2.5 0 0 1 19.5 7h9A2.5 2.5 0 0 1 31 9.5V12M18 22h12M18 28h8"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+        <p class="text-xs font-medium text-slate-600">Product image not supplied</p>
+      </div>
+    )}
+  </div>
+
+  <p class="px-5 pt-3 text-xs text-slate-500">
+    Illustrative stock image; not the exact Temu product.
+  </p>
+
+  <div class="flex flex-1 flex-col p-5">
+    <p class="text-xs font-semibold uppercase tracking-wide text-brand-700">
+      {product.category}
+    </p>
+    <h2 class="mt-2 text-lg font-semibold tracking-tight text-slate-950">
+      {product.name}
+    </h2>
+    <p class="mt-2 flex-1 text-sm leading-6 text-slate-600">
+      {product.description}
+    </p>
+    <a
+      class="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-brand-800 px-4 text-sm font-semibold text-white transition-colors hover:bg-brand-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+      href={product.affiliateUrl}
+      target="_blank"
+      rel="sponsored nofollow noopener noreferrer"
+      aria-label={`Buy ${product.name} on Temu (opens in a new tab)`}
+    >
+      Buy on Temu
+      <svg
+        class="size-4"
+        viewBox="0 0 20 20"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M11 3h6v6M17 3l-8 8M15 11v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </a>
+  </div>
+</article>
