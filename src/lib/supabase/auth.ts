@@ -38,7 +38,19 @@ export function createRequestSupabaseClient(
   const publishableKey =
     process.env.PUBLIC_SUPABASE_ANON_KEY ||
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !publishableKey) throw new AuthConfigurationError();
+  if (!url || !publishableKey) {
+    console.warn("SUPABASE_CONFIG_DIAGNOSTIC", {
+      processEnvUrlPresent: Boolean(process.env.PUBLIC_SUPABASE_URL),
+      processEnvAnonKeyPresent: Boolean(process.env.PUBLIC_SUPABASE_ANON_KEY),
+      importMetaEnvUrlPresent: Boolean(import.meta.env.PUBLIC_SUPABASE_URL),
+      importMetaEnvAnonKeyPresent: Boolean(
+        import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+      ),
+      resolvedUrlPresent: Boolean(url),
+      resolvedAnonKeyPresent: Boolean(publishableKey),
+    });
+    throw new AuthConfigurationError();
+  }
   const siteUrl =
     process.env.PUBLIC_SITE_URL || import.meta.env.PUBLIC_SITE_URL;
   const secureCookies = siteUrl
