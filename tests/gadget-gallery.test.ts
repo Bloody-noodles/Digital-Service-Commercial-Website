@@ -30,8 +30,8 @@ test("non-finite selection safely defaults to the first available image", () => 
   assert.equal(normalizeImageIndex(Number.NaN, 2), 0);
 });
 
-test("the expanded catalogue keeps distinct products and local gallery images", () => {
-  assert.ok(gadgetProducts.length >= 80);
+test("the consumer catalogue contains distinct, relevant products and local photos", () => {
+  assert.ok(gadgetProducts.length >= 15);
   assert.equal(
     new Set(gadgetProducts.map((product) => product.slug)).size,
     gadgetProducts.length,
@@ -42,8 +42,16 @@ test("the expanded catalogue keeps distinct products and local gallery images", 
   );
 
   const imagePaths = new Set<string>();
+  const forbiddenCatalogTerms =
+    /adafruit|development board|microcontroller|resistor|sensor|speaker driver|battery cell|engineering component|oriamo/i;
   for (const product of gadgetProducts) {
     assert.ok(product.images.length > 0, product.slug + " has no images");
+    assert.ok(
+      !forbiddenCatalogTerms.test(
+        `${product.name} ${product.category} ${product.description}`,
+      ),
+      product.slug + " is not a consumer gadget listing",
+    );
     for (const image of product.images) {
       assert.ok(
         existsSync(resolve("public", image.src.replace(/^\//, ""))),
@@ -58,7 +66,14 @@ test("the expanded catalogue keeps distinct products and local gallery images", 
     }
     assert.equal(product.affiliateUrl, "https://temu.to/k/e9uu7t2whv5");
     assert.ok(
-      product.sourceUrl.startsWith("https://www.adafruit.com/product/"),
+      product.sourceUrl.startsWith("https://commons.wikimedia.org/wiki/File:"),
+      product.slug + " lacks a documented Commons image source",
     );
   }
+
+  assert.equal(gadgetProducts.length, 19);
+  assert.equal(imagePaths.size, 19);
+  assert.ok(gadgetProducts.some((product) => product.name.includes("JBL")));
+  assert.ok(gadgetProducts.some((product) => product.name.includes("Anker")));
+  assert.ok(gadgetProducts.some((product) => product.name.includes("Oraimo")));
 });
