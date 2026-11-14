@@ -1,5 +1,6 @@
 ---
 import { site } from "@/data/site";
+import { createDirectWhatsAppLink } from "@/lib/whatsapp";
 ---
 
 <footer class="border-t border-slate-200 bg-white">
@@ -21,13 +22,13 @@ import { site } from "@/data/site";
           </a>
         </li>
         <li>
-          <a class="hover:text-brand-800" href="/promotions">
-            Promotions
+          <a class="hover:text-brand-800" href="/gadgets">
+            Gadgets & Electronics
           </a>
         </li>
         <li>
-          <a class="hover:text-brand-800" href="/announcements">
-            Announcements
+          <a class="hover:text-brand-800" href="/promotions">
+            Deals, Opportunities & Updates
           </a>
         </li>
         <li>
@@ -68,8 +69,43 @@ import { site } from "@/data/site";
       </ul>
     </div>
     <div>
-      <h2 class="text-sm font-semibold text-slate-900">Visit or message us</h2>
-      <p class="mt-3 text-sm leading-6 text-slate-600">{site.location}</p>
+      <h2 class="text-sm font-semibold text-slate-900">Contact and visit</h2>
+      <ul class="mt-3 space-y-2 text-sm text-slate-600">
+        <li>
+          <a
+            class="font-medium text-brand-800 hover:text-brand-700"
+            href={createDirectWhatsAppLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={
+              "Chat with Dee-Faith Pride on WhatsApp at " + site.whatsappNumber
+            }
+          >
+            WhatsApp: {site.whatsappNumber}
+          </a>
+        </li>
+        <li>
+          <a
+            class="break-all font-medium text-brand-800 hover:text-brand-700"
+            href={"mailto:" + site.email}
+            aria-label={"Email Dee-Faith Pride at " + site.email}
+          >
+            {site.email}
+          </a>
+        </li>
+        <li>
+          <a
+            class="font-medium text-brand-800 hover:text-brand-700"
+            href={site.facebookUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visit Dee-Faith Pride Multi-Biz on Facebook (opens in a new tab)"
+          >
+            Facebook page
+          </a>
+        </li>
+      </ul>
+      <p class="mt-4 text-sm leading-6 text-slate-600">{site.location}</p>
       <p class="mt-2 text-sm font-semibold text-emerald-800">
         {site.openingHours}
       </p>
@@ -81,7 +117,6 @@ import { site } from "@/data/site";
       >
         Get directions
       </a>
-      <p class="mt-2 text-sm text-slate-600">WhatsApp: {site.whatsappNumber}</p>
     </div>
   </div>
   <div class="border-t border-slate-100">

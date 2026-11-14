@@ -2,35 +2,497 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PageIntro from "@/components/ui/PageIntro.astro";
 import { site } from "@/data/site";
+import { createDirectWhatsAppLink } from "@/lib/whatsapp";
+
+const offerings = [
+  {
+    title: "Airtime & mobile data",
+    description:
+      "Explore airtime and data assistance for supported mobile networks.",
+    href: "/services/airtime-data",
+    icon: "M8 3h8a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm2 14h4",
+  },
+  {
+    title: "JAMB services",
+    description:
+      "Find JAMB-related digital assistance and registration support.",
+    href: "/services/jamb-services",
+    icon: "M7 3h7l4 4v14H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm7 0v5h5m-10 4h6m-6 4h6",
+  },
+  {
+    title: "WAEC services",
+    description: "Explore WAEC-related assistance and examination services.",
+    href: "/services/waec-services",
+    icon: "M7 3h7l4 4v14H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm7 0v5h5m-10 4h6m-6 4h6",
+  },
+  {
+    title: "NECO services",
+    description: "Find NECO-related assistance and examination services.",
+    href: "/services/neco-services",
+    icon: "M7 3h7l4 4v14H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm7 0v5h5m-10 4h6m-6 4h6",
+  },
+  {
+    title: "Electricity bill payments",
+    description: "Request assistance with prepaid electricity bill payments.",
+    href: "/services/prepaid-electricity",
+    icon: "m13 2-9 12h7l-1 8 10-13h-7l1-7Z",
+  },
+  {
+    title: "Decoder subscriptions",
+    description:
+      "Explore decoder subscription assistance for supported services.",
+    href: "/services/decoder-subscriptions",
+    icon: "M3 5h18v12H3zM8 21h8m-4-4v4m-5-12h10",
+  },
+  {
+    title: "Scratch cards & tokens",
+    description: "Ask about exam scratch cards and result-checking tokens.",
+    href: "/services/exam-scratch-cards-tokens",
+    icon: "M3 6h18v12H3zM7 6v2m10-2v2M7 16v2m10-2v2m-6-7h2",
+  },
+  {
+    title: "Online registrations",
+    description:
+      "Get help with online registrations, applications and related digital tasks.",
+    href: "/services/online-registration",
+    icon: "M6 3h12a2 2 0 0 1 2 2v14H4V5a2 2 0 0 1 2-2Zm3 5h6m-6 4h6m-6 4h3",
+  },
+  {
+    title: "Gadgets & electronics",
+    description:
+      "Browse selected gadgets in the catalogue; product purchases are completed directly with Temu.",
+    href: "/gadgets",
+    icon: "M4 5h16v11H4zM8 20h8m-4-4v4m-5-12h10",
+  },
+];
+
+const values = [
+  {
+    title: "Clarity",
+    description:
+      "We aim to make service information and next steps easy to understand.",
+    icon: "M5 12h14m-7-7 7 7-7 7",
+  },
+  {
+    title: "Convenience",
+    description:
+      "We bring a range of everyday digital service options together in one place.",
+    icon: "M4 7h16M4 12h16M4 17h10",
+  },
+  {
+    title: "Care",
+    description:
+      "We value respectful communication and attention to each customer request.",
+    icon: "M12 21s-8-4.5-8-11a4 4 0 0 1 8-2 4 4 0 0 1 8 2c0 6.5-8 11-8 11Z",
+  },
+  {
+    title: "Responsibility",
+    description:
+      "We aim to share accurate information and confirm details before service fulfilment.",
+    icon: "M12 3 20 6v5c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6l8-3Zm-3 9 2 2 4-4",
+  },
+];
 ---
 
 <BaseLayout
-  title="About | Dee-Faith Pride Multi-Biz"
-  description="About Dee-Faith Pride Multi-Biz."
+  title="About Us | Dee-Faith Pride Multi-Biz"
+  description="Learn about Dee-Faith Pride Multi-Biz, our digital services, selected gadgets, purpose and ways to contact us."
 >
   <main id="main-content">
     <PageIntro
       eyebrow="About the business"
-      title={site.name}
-      description={site.tagline}
+      title="Dee-Faith Pride Multi-Biz"
+      description="A convenient place to explore digital services, request assistance and discover selected gadgets and electronics."
     />
-    <section class="mx-auto max-w-7xl px-5 py-12 sm:px-8">
-      <div class="max-w-3xl rounded-2xl border border-slate-200 bg-white p-7 sm:p-10">
-        <h2 class="text-xl font-semibold text-brand-900">
-          Digital service requests, with human review
+
+    <section class="mx-auto max-w-7xl px-5 py-10 sm:px-8 lg:py-14">
+      <div class="grid overflow-hidden rounded-3xl bg-brand-950 text-white shadow-xl lg:grid-cols-[1.25fr_0.75fr]">
+        <div class="p-7 sm:p-10 lg:p-14">
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-brand-200">
+            Our story
+          </p>
+          <h2 class="mt-4 max-w-2xl text-2xl font-semibold leading-tight tracking-tight sm:text-4xl">
+            Bringing everyday digital needs within easier reach.
+          </h2>
+          <p class="mt-5 max-w-2xl text-sm leading-7 text-brand-100 sm:text-base">
+            Dee-Faith Pride Multi-Biz is built to help people discover common
+            digital services and find a straightforward way to request
+            assistance. The website also presents a separate catalogue of
+            selected gadgets and electronics, with purchases handled directly by
+            Temu.
+          </p>
+          <p class="mt-4 max-w-2xl text-sm leading-7 text-brand-100 sm:text-base">
+            Customers can browse service information online, then contact the
+            business to clarify availability, requirements and next steps.
+            Service requests are reviewed by the team before fulfilment.
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a
+              class="inline-flex min-h-11 items-center justify-center rounded-lg bg-white px-5 text-sm font-semibold text-brand-950 transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              href="/services"
+            >
+              Explore services
+            </a>
+            <a
+              class="inline-flex min-h-11 items-center justify-center rounded-lg border border-brand-300 px-5 text-sm font-semibold text-white transition-colors hover:bg-brand-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              href="/gadgets"
+            >
+              Browse gadgets
+            </a>
+          </div>
+        </div>
+
+        <div
+          class="relative flex min-h-64 items-center justify-center overflow-hidden bg-gradient-to-br from-brand-800 via-brand-700 to-accent-500 p-8 sm:min-h-80 lg:min-h-full"
+          aria-label="Dee-Faith Pride brand illustration"
+        >
+          <div
+            class="absolute -right-14 -top-14 size-64 rounded-full border border-white/20"
+            aria-hidden="true"
+          ></div>
+          <div
+            class="absolute -bottom-24 -left-12 size-64 rounded-full border border-white/20"
+            aria-hidden="true"
+          ></div>
+          <div class="relative grid size-36 place-items-center rounded-[2rem] border border-white/40 bg-white/15 shadow-2xl backdrop-blur-sm sm:size-44">
+            <span
+              class="text-5xl font-bold tracking-tight text-white sm:text-6xl"
+              aria-hidden="true"
+            >
+              DF
+            </span>
+            <span class="sr-only">Dee-Faith Pride Multi-Biz</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="mx-auto grid max-w-7xl gap-8 px-5 pb-12 sm:px-8 lg:grid-cols-[1fr_0.8fr] lg:gap-12 lg:pb-16"
+      aria-labelledby="who-we-are-heading"
+    >
+      <div>
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">
+          Who we are
+        </p>
+        <h2
+          class="mt-3 text-2xl font-semibold tracking-tight text-brand-950 sm:text-3xl"
+          id="who-we-are-heading"
+        >
+          One business, useful services and selected products.
         </h2>
-        <p class="mt-4 text-sm leading-7 text-slate-600">
-          This website is being developed to help customers explore digital
-          services and request assistance. Service availability, prices, contact
-          details, and business credentials must be supplied and verified by the
-          business before publication.
+        <p class="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
+          Dee-Faith Pride Multi-Biz provides digital service assistance and
+          makes selected gadgets and electronics available to explore through
+          its website. The services area helps customers understand what
+          assistance is offered; the gadgets catalogue links customers to Temu
+          for product details and purchasing.
         </p>
-        <p class="mt-4 text-sm leading-7 text-slate-600">
-          Payments are planned to be made manually and confirmed by an
-          administrator. Service fulfilment is also handled manually; a payment
-          receipt is not confirmation that payment has been received or that a
-          service is complete.
+      </div>
+      <aside class="rounded-2xl border border-brand-100 bg-brand-50 p-6 sm:p-8">
+        <h2 class="text-lg font-semibold text-brand-950">About the founder</h2>
+        <div class="mt-5 flex items-center gap-4">
+          <div
+            class="grid size-16 shrink-0 place-items-center rounded-2xl bg-brand-900 text-lg font-bold text-white"
+            aria-hidden="true"
+          >
+            AA
+          </div>
+          <div>
+            <p class="font-semibold text-slate-950">Adeniyi Adebowale</p>
+            <p class="mt-1 text-sm text-slate-600">Founder</p>
+          </div>
+        </div>
+        <p class="mt-5 text-sm leading-7 text-slate-700">
+          Adeniyi Adebowale is the founder of Dee-Faith Pride Multi-Biz.
         </p>
+        <p class="mt-3 rounded-lg border border-dashed border-brand-300 bg-white/70 p-4 text-sm leading-6 text-slate-600">
+          <span class="font-semibold text-slate-800">
+            Owner profile placeholder:
+          </span>
+          A portrait and any additional biography details can be added here
+          after the owner provides and approves them.
+        </p>
+      </aside>
+    </section>
+
+    <section
+      class="bg-slate-50 py-12 sm:py-16"
+      aria-labelledby="services-heading"
+    >
+      <div class="mx-auto max-w-7xl px-5 sm:px-8">
+        <div class="max-w-3xl">
+          <p class="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">
+            Our services
+          </p>
+          <h2
+            class="mt-3 text-2xl font-semibold tracking-tight text-brand-950 sm:text-3xl"
+            id="services-heading"
+          >
+            Practical help for everyday digital tasks.
+          </h2>
+          <p class="mt-3 text-sm leading-7 text-slate-600">
+            Browse the relevant service page for details. Availability and
+            requirements can be confirmed with the team before proceeding.
+          </p>
+          <p class="mt-4 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-600">
+            Service requests are reviewed before fulfilment. A payment receipt
+            alone does not confirm that payment has been received or a service
+            completed.
+          </p>
+        </div>
+
+        <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {offerings.map((offering) => (
+            <a
+              class="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+              href={offering.href}
+            >
+              <div class="flex items-start gap-4">
+                <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-800 transition-colors group-hover:bg-brand-100">
+                  <svg
+                    class="size-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d={offering.icon}
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span>
+                  <span class="block font-semibold text-slate-950">
+                    {offering.title}
+                  </span>
+                  <span class="mt-1 block text-sm leading-6 text-slate-600">
+                    {offering.description}
+                  </span>
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-5 py-12 sm:px-8 lg:py-16">
+      <div class="grid gap-8 lg:grid-cols-2">
+        <article class="rounded-2xl border border-slate-200 bg-white p-7 sm:p-9">
+          <p class="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">
+            Our mission
+          </p>
+          <h2 class="mt-3 text-xl font-semibold text-brand-950 sm:text-2xl">
+            Make useful digital services easier to access.
+          </h2>
+          <p class="mt-3 text-sm leading-7 text-slate-600">
+            Our mission is to make everyday digital services easier to discover
+            and request, while giving customers a clear way to explore selected
+            gadgets and electronics.
+          </p>
+        </article>
+        <article class="rounded-2xl border border-slate-200 bg-white p-7 sm:p-9">
+          <p class="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">
+            Our vision
+          </p>
+          <h2 class="mt-3 text-xl font-semibold text-brand-950 sm:text-2xl">
+            A trusted destination for services and selected products.
+          </h2>
+          <p class="mt-3 text-sm leading-7 text-slate-600">
+            Our vision is to grow a dependable, customer-friendly business where
+            people can conveniently explore digital assistance and selected
+            products online.
+          </p>
+        </article>
+      </div>
+
+      <div class="mt-12">
+        <div class="max-w-3xl">
+          <p class="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">
+            Our core values
+          </p>
+          <h2 class="mt-3 text-2xl font-semibold tracking-tight text-brand-950">
+            Principles that guide how we serve.
+          </h2>
+        </div>
+        <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {values.map((value) => (
+            <article class="rounded-2xl bg-brand-50 p-5">
+              <span class="grid size-10 place-items-center rounded-lg bg-white text-brand-800 shadow-sm">
+                <svg
+                  class="size-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d={value.icon}
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <h3 class="mt-4 font-semibold text-brand-950">{value.title}</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-600">
+                {value.description}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="bg-brand-950 py-12 text-white sm:py-16"
+      aria-labelledby="why-heading"
+    >
+      <div class="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.16em] text-brand-200">
+            Why choose us
+          </p>
+          <h2
+            class="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl"
+            id="why-heading"
+          >
+            Clear ways to find help and get in touch.
+          </h2>
+          <p class="mt-4 text-sm leading-7 text-brand-100">
+            We bring service information and selected product links together
+            online, with contact options for customers who need to discuss a
+            request.
+          </p>
+        </div>
+        <ul class="grid gap-4 sm:grid-cols-2">
+          <li class="rounded-xl border border-white/15 bg-white/5 p-5">
+            <h3 class="font-semibold">Convenient discovery</h3>
+            <p class="mt-2 text-sm leading-6 text-brand-100">
+              Explore service categories and the gadgets catalogue from one
+              website.
+            </p>
+          </li>
+          <li class="rounded-xl border border-white/15 bg-white/5 p-5">
+            <h3 class="font-semibold">Accessible support</h3>
+            <p class="mt-2 text-sm leading-6 text-brand-100">
+              Reach the business through WhatsApp, email or Facebook to clarify
+              your needs.
+            </p>
+          </li>
+          <li class="rounded-xl border border-white/15 bg-white/5 p-5">
+            <h3 class="font-semibold">Human review</h3>
+            <p class="mt-2 text-sm leading-6 text-brand-100">
+              Digital service requests are reviewed by the team before
+              fulfilment.
+            </p>
+          </li>
+          <li class="rounded-xl border border-white/15 bg-white/5 p-5">
+            <h3 class="font-semibold">Careful information</h3>
+            <p class="mt-2 text-sm leading-6 text-brand-100">
+              We aim to confirm service details rather than promise unsupported
+              outcomes.
+            </p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section
+      class="mx-auto max-w-7xl px-5 py-12 sm:px-8 lg:py-16"
+      aria-labelledby="contact-heading"
+    >
+      <div class="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">
+            Contact and location
+          </p>
+          <h2
+            class="mt-3 text-2xl font-semibold tracking-tight text-brand-950 sm:text-3xl"
+            id="contact-heading"
+          >
+            We’re here to help you take the next step.
+          </h2>
+          <p class="mt-4 text-sm leading-7 text-slate-600">
+            Contact the team about a service request or ask for more
+            information. For product purchases, follow the catalogue link to
+            Temu.
+          </p>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+          <a
+            class="rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-brand-300 hover:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+            href={createDirectWhatsAppLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={
+              "Chat with Dee-Faith Pride on WhatsApp at " + site.whatsappNumber
+            }
+          >
+            <span class="text-xs font-bold uppercase tracking-wide text-brand-700">
+              WhatsApp
+            </span>
+            <span class="mt-2 block font-semibold text-slate-950">
+              {site.whatsappNumber}
+            </span>
+            <span class="mt-2 block text-sm text-slate-600">
+              Start a conversation
+            </span>
+          </a>
+          <a
+            class="rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-brand-300 hover:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+            href={"mailto:" + site.email}
+            aria-label={"Email Dee-Faith Pride at " + site.email}
+          >
+            <span class="text-xs font-bold uppercase tracking-wide text-brand-700">
+              Email
+            </span>
+            <span class="mt-2 block break-all font-semibold text-slate-950">
+              {site.email}
+            </span>
+            <span class="mt-2 block text-sm text-slate-600">
+              Send an enquiry
+            </span>
+          </a>
+          <a
+            class="rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-brand-300 hover:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+            href={site.facebookUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visit Dee-Faith Pride Multi-Biz on Facebook (opens in a new tab)"
+          >
+            <span class="text-xs font-bold uppercase tracking-wide text-brand-700">
+              Facebook
+            </span>
+            <span class="mt-2 block font-semibold text-slate-950">
+              Visit our page
+            </span>
+            <span class="mt-2 block text-sm text-slate-600">
+              Follow business updates
+            </span>
+          </a>
+          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:col-span-2">
+            <p class="text-xs font-bold uppercase tracking-wide text-brand-700">
+              Business location
+            </p>
+            <address class="mt-2 not-italic text-sm leading-6 text-slate-700">
+              {site.location}
+            </address>
+            <a
+              class="mt-4 inline-flex min-h-10 items-center justify-center rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-brand-800 hover:border-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+              href={site.mapsSearchUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Get directions
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   </main>

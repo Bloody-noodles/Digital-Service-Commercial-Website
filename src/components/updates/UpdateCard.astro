@@ -1,0 +1,113 @@
+---
+import { updateCategories, type CentreUpdate } from "@/data/updates";
+import {
+  getEffectiveUpdateStatus,
+  getSafeUpdateDestination,
+} from "@/lib/updates/centre";
+
+interface Props {
+  update: CentreUpdate;
+}
+
+const { update } = Astro.props;
+const categoryLabel =
+  updateCategories.find((category) => category.id === update.category)?.label ??
+  "Update";
+const status = getEffectiveUpdateStatus(update);
+const statusStyles = {
+  active: "bg-emerald-50 text-emerald-800 ring-emerald-600/20",
+  upcoming: "bg-blue-50 text-blue-800 ring-blue-600/20",
+  expired: "bg-slate-100 text-slate-700 ring-slate-500/20",
+};
+const statusLabel = status[0].toUpperCase() + status.slice(1);
+const publishedDate = new Date(
+  update.publishedAt + "T00:00:00",
+).toLocaleDateString("en-NG", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+const expiryDate = update.expiresAt
+  ? new Date(update.expiresAt + "T00:00:00").toLocaleDateString("en-NG", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    })
+  : null;
+const destination =
+  status === "expired" ? null : getSafeUpdateDestination(update.ctaUrl);
+---
+
+<article
+  class="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md"
+  data-update-card
+  data-category={update.category}
+  data-search={
+    update.title + " " + update.description + " " + categoryLabel + " " + status
+  }
+>
+  {update.image && (
+    <div class="aspect-[16/9] overflow-hidden bg-slate-100">
+      <img
+        class="size-full object-cover"
+        src={update.image.src}
+        alt={update.image.alt}
+        loading="lazy"
+        decoding="async"
+        width="800"
+        height="450"
+      />
+    </div>
+  )}
+  <div class="flex flex-1 flex-col p-5 sm:p-6">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <span class="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800">
+        {categoryLabel}
+      </span>
+      <span
+        class:list={[
+          "rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset",
+          statusStyles[status],
+        ]}
+        aria-label={"Update status: " + statusLabel}
+      >
+        {statusLabel}
+      </span>
+    </div>
+    <h2 class="mt-4 text-lg font-semibold leading-6 tracking-tight text-slate-950">
+      {update.title}
+    </h2>
+    <p class="mt-2 flex-1 text-sm leading-6 text-slate-600">
+      {update.description}
+    </p>
+    <dl class="mt-5 space-y-1 border-t border-slate-100 pt-4 text-xs text-slate-500">
+      <div class="flex flex-wrap gap-x-1">
+        <dt>{status === "upcoming" ? "Publication date:" : "Published:"}</dt>
+        <dd>
+          <time datetime={update.publishedAt}>{publishedDate}</time>
+        </dd>
+      </div>
+      {expiryDate && (
+        <div class="flex flex-wrap gap-x-1">
+          <dt>Expiry date:</dt>
+          <dd>
+            <time datetime={update.expiresAt}>{expiryDate}</time>
+          </dd>
+        </div>
+      )}
+    </dl>
+    {destination && update.ctaLabel && (
+      <a
+        class="mt-5 inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-800 px-4 text-sm font-semibold text-white transition-colors hover:bg-brand-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+        href={destination.href}
+        target={destination.external ? "_blank" : undefined}
+        rel={destination.external ? "noopener noreferrer" : undefined}
+      >
+        {update.ctaLabel}
+        {destination.external && (
+          <span class="sr-only"> (opens in a new tab)</span>
+        )}
+      </a>
+    )}
+  </div>
+</article>

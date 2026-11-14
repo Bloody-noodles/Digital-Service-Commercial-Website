@@ -2,75 +2,115 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PageIntro from "@/components/ui/PageIntro.astro";
 import { site } from "@/data/site";
-import { createWhatsAppLink } from "@/lib/whatsapp";
+import { createDirectWhatsAppLink } from "@/lib/whatsapp";
 ---
 
 <BaseLayout
   title="Contact | Dee-Faith Pride Multi-Biz"
-  description="Contact information for Dee-Faith Pride Multi-Biz."
+  description="Contact Dee-Faith Pride Multi-Biz on WhatsApp, by email, or on Facebook."
 >
   <main id="main-content">
     <PageIntro
       eyebrow="Get in touch"
-      title="Contact information"
+      title="Contact Dee-Faith Pride"
       description="Ask about a service, request a quote, or get help with your next step."
     />
-    <section class="mx-auto grid max-w-7xl gap-6 px-5 py-12 sm:px-8 lg:grid-cols-2">
-      <div class="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm sm:p-9">
+    <section
+      class="mx-auto grid max-w-7xl gap-5 px-5 py-12 sm:grid-cols-2 sm:px-8 xl:grid-cols-4"
+      aria-label="Business contact options"
+    >
+      <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
         <p class="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">
-          WhatsApp enquiries
+          WhatsApp
         </p>
-        <h2 class="mt-2 text-2xl font-semibold text-brand-900">
-          Let’s discuss what you need
+        <h2 class="mt-2 text-xl font-semibold text-brand-900">
+          Chat with our team
         </h2>
         <p class="mt-3 text-sm leading-6 text-slate-600">
-          Message {site.name} about printing, registrations, graphics, bills,
+          Message us about printing, registrations, graphics, bills,
           subscriptions, or another digital service. We’ll confirm the
           requirements and current price before proceeding.
         </p>
         <a
-          class="mt-6 inline-flex min-h-12 items-center justify-center rounded-lg bg-[#167a4a] px-5 text-sm font-semibold text-white hover:bg-[#12633c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
-          href={createWhatsAppLink(
-            `Hello ${site.name}, I have a question about your services.`,
-          )}
+          class="mt-5 inline-flex min-h-11 items-center justify-center rounded-lg bg-[#167a4a] px-4 text-sm font-semibold text-white hover:bg-[#12633c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+          href={createDirectWhatsAppLink()}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label={
+            "Chat with Dee-Faith Pride on WhatsApp at " + site.whatsappNumber
+          }
         >
           Chat on WhatsApp
         </a>
-        <p class="mt-3 text-xs text-slate-500">
-          WhatsApp: {site.whatsappNumber}
+        <p class="mt-3 text-sm text-slate-600">
+          WhatsApp:{" "}
+          <span class="font-medium text-slate-900">{site.whatsappNumber}</span>
         </p>
-      </div>
-      <div class="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm sm:p-9">
+      </article>
+
+      <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">
+          Email
+        </p>
+        <h2 class="mt-2 text-xl font-semibold text-brand-900">
+          Send us a message
+        </h2>
+        <p class="mt-3 text-sm leading-6 text-slate-600">
+          Email questions about our services or your enquiry. We’ll reply to
+          your message at this address.
+        </p>
+        <a
+          class="mt-5 inline-flex min-h-11 items-center rounded-lg border border-slate-300 px-4 text-sm font-semibold text-brand-800 hover:border-brand-700 hover:text-brand-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+          href={"mailto:" + site.email}
+          aria-label={"Email Dee-Faith Pride at " + site.email}
+        >
+          {site.email}
+        </a>
+      </article>
+
+      <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">
+          Facebook
+        </p>
+        <h2 class="mt-2 text-xl font-semibold text-brand-900">
+          Follow our page
+        </h2>
+        <p class="mt-3 text-sm leading-6 text-slate-600">
+          Visit our Facebook page for updates and ways to get in touch.
+        </p>
+        <a
+          class="mt-5 inline-flex min-h-11 items-center rounded-lg border border-slate-300 px-4 text-sm font-semibold text-brand-800 hover:border-brand-700 hover:text-brand-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+          href={site.facebookUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Visit Dee-Faith Pride Multi-Biz on Facebook (opens in a new tab)"
+        >
+          Visit Facebook
+        </a>
+      </article>
+
+      <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
         <p class="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">
           Visit us
         </p>
-        <h2 class="mt-2 text-2xl font-semibold text-brand-900">
+        <h2 class="mt-2 text-xl font-semibold text-brand-900">
           Find us in Ado-Ekiti
         </h2>
-        <p class="mt-3 text-base font-medium text-slate-800">{site.location}</p>
-        <p class="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-emerald-800">
-          <span
-            class="size-2 rounded-full bg-emerald-500"
-            aria-hidden="true"
-          ></span>
+        <p class="mt-3 text-sm leading-6 font-medium text-slate-800">
+          {site.location}
+        </p>
+        <p class="mt-2 text-sm font-semibold text-emerald-800">
           {site.openingHours}
         </p>
-        <p class="mt-3 text-sm leading-6 text-slate-600">
-          Come in for printing, registrations, design work, and other cybercafé
-          services. For complex requests, message us first to confirm the
-          details.
-        </p>
         <a
-          class="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-300 px-4 text-sm font-semibold text-brand-800 hover:border-brand-700"
+          class="mt-5 inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-300 px-4 text-sm font-semibold text-brand-800 hover:border-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
           href={site.mapsSearchUrl}
           target="_blank"
           rel="noopener noreferrer"
         >
           Open directions in Maps
         </a>
-      </div>
+      </article>
     </section>
   </main>
 </BaseLayout>

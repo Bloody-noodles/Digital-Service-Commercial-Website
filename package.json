@@ -11,7 +11,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "node --experimental-strip-types --test tests/order-validation.test.ts",
+    "test": "node --experimental-strip-types --test tests/order-validation.test.ts tests/admin-password-recovery.test.ts tests/updates-centre.test.ts tests/gadget-gallery.test.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

@@ -7,6 +7,8 @@ type CookieStore = {
   set(name: string, value: string, options?: CookieOptions): void;
 };
 
+export type SupabaseCookieWriteObserver = (name: string) => void;
+
 export type StaffProfile = {
   id: string;
   display_name: string;
@@ -32,13 +34,26 @@ export class StaffProfileLookupError extends Error {
 export function createRequestSupabaseClient(
   request: Request,
   cookies: CookieStore,
+  onCookieWritten?: SupabaseCookieWriteObserver,
 ) {
   const url =
     process.env.PUBLIC_SUPABASE_URL || import.meta.env.PUBLIC_SUPABASE_URL;
   const publishableKey =
     process.env.PUBLIC_SUPABASE_ANON_KEY ||
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !publishableKey) throw new AuthConfigurationError();
+  if (!url || !publishableKey) {
+    console.warn("SUPABASE_CONFIG_DIAGNOSTIC", {
+      processEnvUrlPresent: Boolean(process.env.PUBLIC_SUPABASE_URL),
+      processEnvAnonKeyPresent: Boolean(process.env.PUBLIC_SUPABASE_ANON_KEY),
+      importMetaEnvUrlPresent: Boolean(import.meta.env.PUBLIC_SUPABASE_URL),
+      importMetaEnvAnonKeyPresent: Boolean(
+        import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+      ),
+      resolvedUrlPresent: Boolean(url),
+      resolvedAnonKeyPresent: Boolean(publishableKey),
+    });
+    throw new AuthConfigurationError();
+  }
   const siteUrl =
     process.env.PUBLIC_SITE_URL || import.meta.env.PUBLIC_SITE_URL;
   const secureCookies = siteUrl
@@ -62,6 +77,7 @@ export function createRequestSupabaseClient(
             sameSite: "lax",
             path: "/",
           });
+          onCookieWritten?.(name);
         }
       },
     },
@@ -71,6 +87,70 @@ export function createRequestSupabaseClient(
       detectSessionInUrl: false,
     },
   });
+}
+
+export function clearRequestSupabaseSessionCookies(
+  request: Request,
+  cookies: CookieStore,
+  writtenCookieNames: Iterable<string> = [],
+): boolean {
+  const url =
+    process.env.PUBLIC_SUPABASE_URL || import.meta.env.PUBLIC_SUPABASE_URL;
+  if (!url) return false;
+
+  let storageKey: string;
+  let secureCookies: boolean;
+  try {
+    const projectUrl = new URL(url);
+    storageKey = "sb-" + projectUrl.hostname.split(".")[0] + "-auth-token";
+    const siteUrl =
+      process.env.PUBLIC_SITE_URL || import.meta.env.PUBLIC_SITE_URL;
+    secureCookies = siteUrl
+      ? new URL(siteUrl).protocol === "https:"
+      : new URL(request.url).protocol === "https:";
+  } catch {
+    return false;
+  }
+
+  const names = new Set<string>(writtenCookieNames);
+  for (const cookie of (request.headers.get("cookie") ?? "").split(";")) {
+    const name = cookie.trim().split("=")[0];
+    if (name) names.add(name);
+  }
+
+  names.add(storageKey);
+  names.add(storageKey + "-code-verifier");
+  names.add(storageKey + "-flows-code-verifier");
+
+  const isSessionCookie = (name: string) => {
+    if (name === storageKey) return true;
+    if (name.startsWith(storageKey + ".")) {
+      return /^\d+$/.test(name.slice(storageKey.length + 1));
+    }
+    if (name === storageKey + "-code-verifier") return true;
+    if (name === storageKey + "-flows-code-verifier") return true;
+    return /^-flow-[A-Za-z0-9_-]{8,64}-code-verifier$/.test(
+      name.slice(storageKey.length),
+    );
+  };
+
+  let cleared = true;
+  for (const name of names) {
+    if (!isSessionCookie(name)) continue;
+    try {
+      cookies.set(name, "", {
+        httpOnly: true,
+        secure: secureCookies,
+        sameSite: "lax",
+        path: "/",
+        maxAge: 0,
+        expires: new Date(0),
+      });
+    } catch {
+      cleared = false;
+    }
+  }
+  return cleared;
 }
 
 export async function getActiveStaff(
