@@ -2,7 +2,11 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PageIntro from "@/components/ui/PageIntro.astro";
 import GadgetCard from "@/components/gadgets/GadgetCard.astro";
-import { gadgetCategories, gadgetProducts } from "@/data/gadgets";
+import {
+  gadgetCategories,
+  gadgetProducts,
+  temuLinkNotice,
+} from "@/data/gadgets";
 ---
 
 <BaseLayout
@@ -68,6 +72,25 @@ import { gadgetCategories, gadgetProducts } from "@/data/gadgets";
         ))}
       </div>
 
+      <div class="mt-4 flex flex-wrap items-end justify-end gap-3">
+        <div class="w-full sm:w-56">
+          <label
+            class="mb-2 block text-sm font-semibold text-slate-800"
+            for="gadget-sort"
+          >
+            Sort products
+          </label>
+          <select
+            class="min-h-12 w-full rounded-lg border border-slate-300 bg-white px-4 text-base outline-none focus:border-brand-700 focus:ring-2 focus:ring-brand-100"
+            id="gadget-sort"
+          >
+            <option value="featured">Featured order</option>
+            <option value="name-asc">Name: A to Z</option>
+            <option value="name-desc">Name: Z to A</option>
+            <option value="category">Category</option>
+          </select>
+        </div>
+      </div>
       <div class="mt-5 flex flex-wrap items-center justify-between gap-3">
         <p class="text-sm text-slate-600" id="gadget-count" aria-live="polite">
           {gadgetProducts.length} products shown
@@ -98,6 +121,7 @@ import { gadgetCategories, gadgetProducts } from "@/data/gadgets";
           Check Temu for current prices and product details.
         </p>
       </aside>
+      <p class="mt-3 text-sm leading-6 text-slate-600">{temuLinkNotice}</p>
 
       <div
         class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
@@ -127,6 +151,9 @@ import { gadgetCategories, gadgetProducts } from "@/data/gadgets";
     document.querySelectorAll<HTMLElement>(".gadget-card"),
   );
   const count = document.querySelector<HTMLElement>("#gadget-count");
+  const sort = document.querySelector<HTMLSelectElement>("#gadget-sort");
+  const list = document.querySelector<HTMLElement>("#gadget-list");
+  const originalOrder = new Map(cards.map((card, index) => [card, index]));
   const emptyState = document.querySelector<HTMLElement>("#no-gadgets");
   const clearButton = document.querySelector<HTMLButtonElement>(
     "#clear-gadget-filters",
@@ -135,6 +162,27 @@ import { gadgetCategories, gadgetProducts } from "@/data/gadgets";
     document.querySelectorAll<HTMLButtonElement>("[data-gadget-category]"),
   );
 
+  function sortGadgets() {
+    const mode = sort?.value ?? "featured";
+    const ordered = [...cards].sort((left, right) => {
+      const leftName = left.dataset.name?.toLocaleLowerCase() ?? "";
+      const rightName = right.dataset.name?.toLocaleLowerCase() ?? "";
+      const leftCategory = left.dataset.category?.toLocaleLowerCase() ?? "";
+      const rightCategory = right.dataset.category?.toLocaleLowerCase() ?? "";
+
+      if (mode === "name-asc") return leftName.localeCompare(rightName);
+      if (mode === "name-desc") return rightName.localeCompare(leftName);
+      if (mode === "category") {
+        return (
+          leftCategory.localeCompare(rightCategory) ||
+          leftName.localeCompare(rightName)
+        );
+      }
+      return (originalOrder.get(left) ?? 0) - (originalOrder.get(right) ?? 0);
+    });
+
+    ordered.forEach((card) => list?.append(card));
+  }
   function filterGadgets() {
     const query = search?.value.trim().toLocaleLowerCase() ?? "";
     const selectedCategory = category?.value ?? "";
@@ -167,6 +215,7 @@ import { gadgetCategories, gadgetProducts } from "@/data/gadgets";
 
   search?.addEventListener("input", filterGadgets);
   category?.addEventListener("change", filterGadgets);
+  sort?.addEventListener("change", sortGadgets);
 
   categoryButtons.forEach((button) => {
     button.addEventListener("click", () => {

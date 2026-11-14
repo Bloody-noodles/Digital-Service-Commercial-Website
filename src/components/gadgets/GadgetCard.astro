@@ -13,6 +13,7 @@ const galleryId = "gadget-gallery-" + product.slug;
 <article
   class="gadget-card flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-shadow hover:shadow-md"
   data-category={product.category}
+  data-name={product.name}
   data-search={
     product.name + " " + product.category + " " + product.description
   }
@@ -214,7 +215,15 @@ const galleryId = "gadget-gallery-" + product.slug;
   </div>
 
   <p class="px-5 pt-3 text-xs text-slate-500">
-    Illustrative stock image; not the exact Temu product.
+    Product photo source:{" "}
+    <a
+      class="font-medium text-brand-800 underline underline-offset-2"
+      href={product.sourceUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {product.sourceLabel}
+    </a>
   </p>
 
   <div class="flex flex-1 flex-col p-5">
@@ -232,9 +241,13 @@ const galleryId = "gadget-gallery-" + product.slug;
       href={product.affiliateUrl}
       target="_blank"
       rel="sponsored nofollow noopener noreferrer"
-      aria-label={"Buy " + product.name + " on Temu (opens in a new tab)"}
+      aria-label={
+        "Explore related items on Temu for " +
+        product.name +
+        " (opens in a new tab)"
+      }
     >
-      Buy on Temu
+      Explore on Temu
       <svg class="size-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
         <path
           d="M11 3h6v6M17 3l-8 8M15 11v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"
