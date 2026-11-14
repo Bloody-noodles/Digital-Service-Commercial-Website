@@ -1,10 +1,14 @@
 import { site } from "@/data/site";
 
-export function createWhatsAppLink(message: string): string {
+function getInternationalWhatsAppNumber(): string {
   const digits = site.whatsappNumber.replace(/\D/g, "");
-  const internationalNumber = digits.startsWith("0")
-    ? `234${digits.slice(1)}`
-    : digits;
+  return digits.startsWith("0") ? "234" + digits.slice(1) : digits;
+}
 
-  return `https://wa.me/${internationalNumber}?text=${encodeURIComponent(message)}`;
+export function createDirectWhatsAppLink(): string {
+  return "https://wa.me/" + getInternationalWhatsAppNumber();
+}
+
+export function createWhatsAppLink(message: string): string {
+  return createDirectWhatsAppLink() + "?text=" + encodeURIComponent(message);
 }

@@ -17,21 +17,6 @@ import { gadgetCategories, gadgetProducts } from "@/data/gadgets";
     />
 
     <section class="mx-auto max-w-7xl px-5 py-10 sm:px-8">
-      <aside
-        class="rounded-2xl border border-brand-100 bg-brand-50 p-5 sm:p-6"
-        aria-label="Affiliate disclosure and purchase information"
-      >
-        <p class="text-sm font-semibold leading-6 text-brand-900">
-          Dee-Faith Pride may earn a commission when you purchase products
-          through our Temu affiliate links. This comes at no additional cost to
-          you. All purchases, payments and deliveries are handled directly by
-          Temu.
-        </p>
-        <p class="mt-2 text-sm leading-6 text-slate-700">
-          Check Temu for current prices and product details; they may change.
-        </p>
-      </aside>
-
       <div class="mt-8 grid gap-4 sm:grid-cols-[1fr_16rem]">
         <div>
           <label
@@ -96,11 +81,31 @@ import { gadgetCategories, gadgetProducts } from "@/data/gadgets";
         </button>
       </div>
 
+      <aside
+        class="mt-5 rounded-lg border border-slate-200 border-l-4 border-l-brand-700 bg-slate-50 px-4 py-3 sm:px-5"
+        aria-label="Affiliate disclosure and purchase information"
+      >
+        <h2 class="text-sm font-semibold text-slate-900">
+          Shopping with Dee-Faith Pride
+        </h2>
+        <p class="mt-1 text-sm leading-6 text-slate-700">
+          Explore our selected gadgets and electronics through our Temu
+          affiliate links. Your purchases help support our business at no
+          additional cost to you. All orders, payments and deliveries are
+          handled directly by Temu.
+        </p>
+        <p class="mt-1 text-xs leading-5 text-slate-600">
+          Check Temu for current prices and product details.
+        </p>
+      </aside>
+
       <div
         class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
         id="gadget-list"
       >
-        {gadgetProducts.map((product) => <GadgetCard product={product} />)}
+        {gadgetProducts.map((product) => (
+          <GadgetCard product={product} />
+        ))}
       </div>
 
       <p
@@ -116,7 +121,8 @@ import { gadgetCategories, gadgetProducts } from "@/data/gadgets";
 
 <script>
   const search = document.querySelector<HTMLInputElement>("#gadget-search");
-  const category = document.querySelector<HTMLSelectElement>("#gadget-category");
+  const category =
+    document.querySelector<HTMLSelectElement>("#gadget-category");
   const cards = Array.from(
     document.querySelectorAll<HTMLElement>(".gadget-card"),
   );

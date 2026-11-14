@@ -2,6 +2,8 @@ export const site = {
   name: "Dee-Faith Pride Multi-Biz",
   tagline: "Your Trusted Hub for Digital Services.",
   whatsappNumber: "08108967764",
+  email: "faithpride2022@gmail.com",
+  facebookUrl: "https://www.facebook.com/share/1Bw1YUxQhw/?mibextid=wwXIfr",
   location:
     "No 1, NTA Junction, Ilawe Road, opposite Baptist High School, Ado-Ekiti",
   openingHours: "Open 24 hours, every day",
